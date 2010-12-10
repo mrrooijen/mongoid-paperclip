@@ -1,4 +1,4 @@
-Mongoid::Paperclip - Making Paperclip play nice with Mongoid ORM
+Mongoid::Paperclip - Making Paperclip play nice with Mongoid ODM
 ================================================================
 
 As the title suggests, using this gem you will be able to use [Paperclip](https://github.com/thoughtbot/paperclip) with [Mongoid](http://mongoid.org/).

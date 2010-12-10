@@ -24,7 +24,7 @@ end
 
 ##
 # The Mongoid::Paperclip extension
-# Makes Paperclip play nice with the Mongoid ORM
+# Makes Paperclip play nice with the Mongoid ODM
 #
 # Example:
 #
