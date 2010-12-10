@@ -51,8 +51,6 @@ end
 module Mongoid
   module Paperclip
 
-    VERSION = '0.0.1'
-
     ##
     # Extends the model with the defined Class methods
     def self.included(base)
