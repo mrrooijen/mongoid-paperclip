@@ -1,3 +1,10 @@
+begin
+  require "paperclip"
+rescue LoadError
+  puts "Mongoid::Paperclip requires that you install the Paperclip gem."
+  exit
+end
+
 ##
 # The logger is set to the Active Record logger by Paperclip itself.
 # Because of this, we set the logger to false as "default" so that it doesn't raise
