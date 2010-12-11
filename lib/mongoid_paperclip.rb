@@ -72,9 +72,19 @@ module Mongoid
       # it'll also add the required fields for Paperclip since MongoDB is schemaless and doesn't
       # have migrations.
       def has_attached_file(field, options = {})
+
+        ##
+        # Include Paperclip and Paperclip::Glue for compatibility
         include ::Paperclip
         include ::Paperclip::Glue
+
+        ##
+        # Invoke Paperclip's #has_attached_file method and passes in the
+        # arguments specified by the user that invoked Mongoid::Paperclip#has_attached_file
         has_attached_file(field, options)
+
+        ##
+        # Define the necessary collection fields in Mongoid for Paperclip
         field(:"#{field}_file_name",    :type => String)
         field(:"#{field}_content_type", :type => String)
         field(:"#{field}_file_size",    :type => Integer)
