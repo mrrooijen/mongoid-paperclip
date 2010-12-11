@@ -3,7 +3,7 @@ Mongoid::Paperclip - Making Paperclip play nice with Mongoid ODM
 
 As the title suggests: `Mongoid::Paperclip` makes it easy to hook up [Paperclip](https://github.com/thoughtbot/paperclip) with [Mongoid](http://mongoid.org/).
 
-This is actually easier and faster to set up than when using Paperclip the ActiveRecord ORM.
+This is actually easier and faster to set up than when using Paperclip and the ActiveRecord ORM.
 This example assumes you are using **Ruby on Rails 3** and **Bundler**. However it doesn't require either.
 
 
@@ -19,7 +19,7 @@ Simply define the `mongoid-paperclip` gem inside your `Gemfile`. Additionally, y
     
 Next let's assume we have a User model and we want to allow our users to upload an avatar.
 
-**Rails.root/app/models/user.rb - include the Mongoid::Paperclip and invoke the class method**
+**Rails.root/app/models/user.rb - include the Mongoid::Paperclip module and invoke the provided class method**
 
     class User
       include Mongoid::Document
