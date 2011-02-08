@@ -16,7 +16,7 @@ Simply define the `mongoid-paperclip` gem inside your `Gemfile`. Additionally, y
 
     gem "mongoid-paperclip", :require => "mongoid_paperclip"
     gem "aws-s3",            :require => "aws/s3"
-    
+
 Next let's assume we have a User model and we want to allow our users to upload an avatar.
 
 **Rails.root/app/models/user.rb - include the Mongoid::Paperclip module and invoke the provided class method**
@@ -24,34 +24,34 @@ Next let's assume we have a User model and we want to allow our users to upload 
     class User
       include Mongoid::Document
       include Mongoid::Paperclip
-      
-      has_attached_file :avatar
+
+      has_mongoid_attached_file :avatar
     end
 
 
 That's it
 --------
 
-That's all you have to do. Users can now upload avatars. Unlike ActiveRecord, Mongoid doesn't use migrations, so we don't need to define the Paperclip columns in a separate file. Invoking the `has_attached_file` method will automatically define the necessary `:avatar` fields for you in the background.
+That's all you have to do. Users can now upload avatars. Unlike ActiveRecord, Mongoid doesn't use migrations, so we don't need to define the Paperclip columns in a separate file. Invoking the `has_mongoid_attached_file` method will automatically define the necessary `:avatar` fields for you in the background.
 
 
 A more complex example
 ----------------------
 
-Just like Paperclip, Mongoid::Paperclip takes a second argument (hash of options) for the `has_attached_file` method, so you can do more complex things such as in the following example.
+Just like Paperclip, Mongoid::Paperclip takes a second argument (hash of options) for the `has_mongoid_attached_file` method, so you can do more complex things such as in the following example.
 
     class User
       include Mongoid::Document
       embeds_many :pictures
     end
-    
+
     class Picture
       include Mongoid::Document
       include Mongoid::Paperclip
-      
+
       embedded_in :user, :inverse_of => :pictures
-      
-      has_attached_file :attachment,
+
+      has_mongoid_attached_file :attachment,
         :path           => ':attachment/:id/:style.:extension',
         :storage        => :s3,
         :url            => ':s3_alias_url',
@@ -65,7 +65,7 @@ Just like Paperclip, Mongoid::Paperclip takes a second argument (hash of options
         },
         :convert_options => { :all => '-background white -flatten +matte' }
     end
-    
+
     @user.pictures.each do |picture|
       <%= picture.attachment.url %>
     end

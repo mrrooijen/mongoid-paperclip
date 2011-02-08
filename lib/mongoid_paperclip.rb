@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 begin
   require "paperclip"
 rescue LoadError
@@ -39,15 +41,15 @@ end
 #    include Mongoid::Document
 #    include Mongoid::Paperclip
 #
-#    has_attached_file :avatar
+#    has_mongoid_attached_file :avatar
 #  end
 #
 # The above example is all you need to do. This will load the Paperclip library into the User model
-# and add the "has_attached_file" class method. Provide this method with the same values as you would
+# and add the "has_mongoid_attached_file" class method. Provide this method with the same values as you would
 # when using "vanilla Paperclip". The first parameter is a symbol [:field] and the second parameter is a hash of options [options = {}].
 #
 # Unlike Paperclip for ActiveRecord, since MongoDB does not use "schema" or "migrations", Mongoid::Paperclip automatically adds the neccesary "fields"
-# to your Model (MongoDB collection) when you invoke the "#has_attached_file" method. When you invoke "has_attached_file :avatar" it will
+# to your Model (MongoDB collection) when you invoke the "#has_mongoid_attached_file" method. When you invoke "has_mongoid_attached_file :avatar" it will
 # automatially add the following fields:
 #
 #  field :avatar_file_name,    :type => String
@@ -67,11 +69,11 @@ module Mongoid
     module ClassMethods
 
       ##
-      # Adds Mongoid::Paperclip's "#has_attached_file" class method to the model
+      # Adds Mongoid::Paperclip's "#has_mongoid_attached_file" class method to the model
       # which includes Paperclip and Paperclip::Glue in to the model. Additionally
       # it'll also add the required fields for Paperclip since MongoDB is schemaless and doesn't
       # have migrations.
-      def has_attached_file(field, options = {})
+      def has_mongoid_attached_file(field, options = {})
 
         ##
         # Include Paperclip and Paperclip::Glue for compatibility
@@ -80,7 +82,7 @@ module Mongoid
 
         ##
         # Invoke Paperclip's #has_attached_file method and passes in the
-        # arguments specified by the user that invoked Mongoid::Paperclip#has_attached_file
+        # arguments specified by the user that invoked Mongoid::Paperclip#has_mongoid_attached_file
         has_attached_file(field, options)
 
         ##
@@ -89,6 +91,13 @@ module Mongoid
         field(:"#{field}_content_type", :type => String)
         field(:"#{field}_file_size",    :type => Integer)
         field(:"#{field}_updated_at",   :type => DateTime)
+      end
+
+      ##
+      # This method is deprecated
+      def has_attached_file(field, options = {})
+        raise "Mongoid::Paperclip#has_attached_file is deprecated, " +
+              "Use 'has_mongoid_attached_file' instead"
       end
     end
 
