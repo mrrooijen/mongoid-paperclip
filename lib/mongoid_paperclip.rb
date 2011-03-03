@@ -8,27 +8,19 @@ rescue LoadError
 end
 
 ##
-# The logger is set to the Active Record logger by Paperclip itself.
-# Because of this, we set the logger to false as "default" so that it doesn't raise
-# an "uninitialized constant" exception.
-#
-# You can manually change loggers by adding for example an initializer and configuring the logger, like so:
-#
-#   Paperclip.options[:log] = MyLogger.log
-#
-Paperclip.options[:log] = false
+# Use mongoid's logger.
+module Paperclip
+  class << self
+    def logger
+      Mongoid::Config.logger
+    end
+  end
+end
 
 ##
-# If Ruby on Rails is defined and the logger method exists, the Paperclip logger
-# will be set to the Rails logger by default. You may overwrite the logger by re-defining the
-# logger in for example an initializer file, like so:
-#
-#  Paperclip.options[:log] = MyLogger.log
-#
-if defined?(Rails)
-  if Rails.respond_to?(:logger)
-    Paperclip.options[:log] = Rails.logger
-  end
+# the id of mongoid is not integer, correct the id_partitioin.
+Paperclip.interpolates :id_partition do |attachment, style|
+  attachment.instance.id.to_s.scan(/.{4}/).join("/")
 end
 
 ##
