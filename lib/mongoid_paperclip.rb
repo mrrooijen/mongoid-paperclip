@@ -18,6 +18,12 @@ module Paperclip
 end
 
 ##
+# the id of mongoid is not integer, correct the id_partitioin.
+Paperclip.interpolates :id_partition do |attachment, style|
+  attachment.instance.id.to_s.scan(/.{4}/).join("/")
+end
+
+##
 # The Mongoid::Paperclip extension
 # Makes Paperclip play nice with the Mongoid ODM
 #
