@@ -12,7 +12,7 @@ end
 module Paperclip
   class << self
     def logger
-      Mongoid::Config.logger
+      Mongoid::Config.instance.logger
     end
   end
 end
