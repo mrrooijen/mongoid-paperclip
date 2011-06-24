@@ -12,7 +12,11 @@ end
 module Paperclip
   class << self
     def logger
-      Mongoid::Config.logger
+      if Mongoid::Config.logger.present?
+        Mongoid::Config.logger
+      else
+        super
+      end
     end
   end
 end
