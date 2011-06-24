@@ -15,7 +15,7 @@ module Paperclip
       if Mongoid::Config.logger.present?
         Mongoid::Config.logger
       else
-        super
+        Rails.logger
       end
     end
   end
