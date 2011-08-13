@@ -73,9 +73,11 @@ module Mongoid
 
         ##
         # Include Paperclip and Paperclip::Glue for compatibility
-        include ::Paperclip
-        include ::Paperclip::Glue
-
+        unless self.ancestors.include?(::Paperclip)
+          include ::Paperclip
+          include ::Paperclip::Glue
+        end
+        
         ##
         # Invoke Paperclip's #has_attached_file method and passes in the
         # arguments specified by the user that invoked Mongoid::Paperclip#has_mongoid_attached_file
