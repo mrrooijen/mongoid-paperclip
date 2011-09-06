@@ -91,7 +91,7 @@ module Mongoid
         field(:"#{field}_updated_at",   :type => DateTime)
       end
       
-      def self.validates_presence_of_attached_file(field)
+      def validates_presence_of_attached_file(field)
         validates_presence_of("#{field}_file_name")
         validates_presence_of("#{field}_content_type")
         validates_presence_of("#{field}_file_size")
