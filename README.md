@@ -72,6 +72,19 @@ Just like Paperclip, Mongoid::Paperclip takes a second argument (hash of options
 
 
 There you go
+
+There's also a simple helper method if you want to validate the presence of an attached file.
+
+    class User
+      include Mongoid::Document
+      include Mongoid::Paperclip
+
+      has_mongoid_attached_file :avatar
+      
+      validates_presence_of_attached_file :avatar
+    end
+
+
 ------------
 
 Quite a lot of people have been looking for a solution to use Paperclip with Mongoid so I hope this helps!
