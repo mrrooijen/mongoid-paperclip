@@ -15,6 +15,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = %x[git ls-files -- {spec}/*].split("\n")
   gem.require_path  = 'lib'
 
-  gem.add_dependency 'paperclip', ['~> 2.3.6']
+  gem.add_dependency 'paperclip', ['>= 2.3.6']
 
 end
+
