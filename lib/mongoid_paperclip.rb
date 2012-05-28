@@ -8,20 +8,6 @@ rescue LoadError
 end
 
 ##
-# Use mongoid's logger.
-module Paperclip
-  class << self
-    def logger
-      if Mongoid::Config.logger.present?
-        Mongoid::Config.logger
-      else
-        Rails.logger
-      end
-    end
-  end
-end
-
-##
 # the id of mongoid is not integer, correct the id_partitioin.
 Paperclip.interpolates :id_partition do |attachment, style|
   attachment.instance.id.to_s.scan(/.{4}/).join("/")
