@@ -10,12 +10,12 @@ This example assumes you are using **Ruby on Rails 3** and **Bundler**. However 
 Setting it up
 -------------
 
-Simply define the `mongoid-paperclip` gem inside your `Gemfile`. Additionally, you can define the `aws-s3` gem if you want to upload your files to Amazon S3. *You do not need to explicitly define the `paperclip` gem itself, since this is handled by `mongoid-paperclip`.*
+Simply define the `mongoid-paperclip` gem inside your `Gemfile`. Additionally, you can define the `aws-sdk` gem if you want to upload your files to Amazon S3. *You do not need to explicitly define the `paperclip` gem itself, since this is handled by `mongoid-paperclip`.*
 
 **Rails.root/Gemfile - Just define the following:**
 
     gem "mongoid-paperclip", :require => "mongoid_paperclip"
-    gem "aws-s3",            :require => "aws/s3"
+    gem 'aws-sdk', '~> 1.3.4'
 
 Next let's assume we have a User model and we want to allow our users to upload an avatar.
 
