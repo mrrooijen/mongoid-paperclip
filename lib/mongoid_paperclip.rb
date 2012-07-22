@@ -65,11 +65,16 @@ module Mongoid
         include ::Paperclip
         include ::Paperclip::Glue
 
-        extend(ClassMethods)
+        alias :__mongoid_has_attached_file :has_attached_file
+
+        extend ClassMethods
       end
     end
 
     module ClassMethods
+      def has_attached_file(field, options = {})
+        has_mongoid_attached_file(filed, options)
+      end
 
       ##
       # Adds Mongoid::Paperclip's "#has_mongoid_attached_file" class method to the model
@@ -77,25 +82,17 @@ module Mongoid
       # it'll also add the required fields for Paperclip since MongoDB is schemaless and doesn't
       # have migrations.
       def has_mongoid_attached_file(field, options = {})
-
-        ##
-        # Invoke Paperclip's #has_attached_file method and passes in the
-        # arguments specified by the user that invoked Mongoid::Paperclip#has_mongoid_attached_file
-        has_attached_file(field, options)
-
         ##
         # Define the necessary collection fields in Mongoid for Paperclip
         field(:"#{field}_file_name",    :type => String)
         field(:"#{field}_content_type", :type => String)
         field(:"#{field}_file_size",    :type => Integer)
         field(:"#{field}_updated_at",   :type => DateTime)
-      end
 
-      ##
-      # This method is deprecated
-      def has_attached_file(field, options = {})
-        raise "Mongoid::Paperclip#has_attached_file is deprecated, " +
-              "Use 'has_mongoid_attached_file' instead"
+        ##
+        # Invoke Paperclip's #has_attached_file method and passes in the
+        # arguments specified by the user that invoked Mongoid::Paperclip#has_mongoid_attached_file
+        __mongoid_has_attached_file(field, options)
       end
     end
 
