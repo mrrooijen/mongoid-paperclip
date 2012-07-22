@@ -59,7 +59,14 @@ module Mongoid
     ##
     # Extends the model with the defined Class methods
     def self.included(base)
-      base.extend(ClassMethods)
+      base.instance_eval do
+        ##
+        # Include Paperclip and Paperclip::Glue for compatibility
+        include ::Paperclip
+        include ::Paperclip::Glue
+
+        extend(ClassMethods)
+      end
     end
 
     module ClassMethods
@@ -70,13 +77,6 @@ module Mongoid
       # it'll also add the required fields for Paperclip since MongoDB is schemaless and doesn't
       # have migrations.
       def has_mongoid_attached_file(field, options = {})
-
-        ##
-        # Include Paperclip and Paperclip::Glue for compatibility
-        unless self.ancestors.include?(::Paperclip)
-          include ::Paperclip
-          include ::Paperclip::Glue
-        end
 
         ##
         # Invoke Paperclip's #has_attached_file method and passes in the
