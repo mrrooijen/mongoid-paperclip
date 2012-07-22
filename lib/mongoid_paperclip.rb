@@ -12,7 +12,7 @@ end
 module Paperclip
   class << self
     def logger
-      if Mongoid::Config.logger.present?
+      begin
         Mongoid::Config.logger
       else
         Rails.logger
@@ -77,7 +77,7 @@ module Mongoid
           include ::Paperclip
           include ::Paperclip::Glue
         end
-        
+
         ##
         # Invoke Paperclip's #has_attached_file method and passes in the
         # arguments specified by the user that invoked Mongoid::Paperclip#has_mongoid_attached_file
