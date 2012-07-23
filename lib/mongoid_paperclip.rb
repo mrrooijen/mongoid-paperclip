@@ -12,7 +12,9 @@ end
 module Paperclip
   class << self
     def logger
-      begin
+      if Mongoid.respond_to?(:logger) # mongoid 3
+        Mongoid.logger
+      elsif Mongoid::Config.respond_to?(:logger) # mongoid 2
         Mongoid::Config.logger
       else
         Rails.logger
