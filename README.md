@@ -83,7 +83,7 @@ In the above example:
     attr_accepted :pictures_attributes, ...
     ...
     end
-    
+
     @user.update_attributes({ ... :pictures => [...] })
 ```
 
@@ -94,3 +94,10 @@ There you go
 Quite a lot of people have been looking for a solution to use Paperclip with Mongoid so I hope this helps!
 
 If you need more information on either [Mongoid](http://mongoid.org/) or [Paperclip](https://github.com/thoughtbot/paperclip) I suggest checking our their official documentation and website.
+
+
+License
+-------
+
+Mongoid::Paperclip is released under the MIT license. See LICENSE for more information.
+
