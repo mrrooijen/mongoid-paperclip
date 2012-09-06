@@ -70,6 +70,23 @@ Just like Paperclip, Mongoid::Paperclip takes a second argument (hash of options
       <%= picture.attachment.url %>
     end
 
+Note on embedded documents: if you plan to save or update the parent document, you MUST add cascade_callbacks: true to your
+embeds_XXX statement.  Otherwise, your data will be updated but the paperclip functions will not run to copy/update your file.
+
+In the above example:
+
+```ruby
+    class User
+    ...
+    embeds_many :pictures, :cascade_callbacks => true
+    accepts_nested_attributes_for :pictures, ...
+    attr_accepted :pictures_attributes, ...
+    ...
+    end
+
+    @user.update_attributes({ ... :pictures => [...] })
+```
+
 
 There you go
 ------------
@@ -77,3 +94,10 @@ There you go
 Quite a lot of people have been looking for a solution to use Paperclip with Mongoid so I hope this helps!
 
 If you need more information on either [Mongoid](http://mongoid.org/) or [Paperclip](https://github.com/thoughtbot/paperclip) I suggest checking our their official documentation and website.
+
+
+License
+-------
+
+Mongoid::Paperclip is released under the MIT license. See LICENSE for more information.
+
