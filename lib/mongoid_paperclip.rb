@@ -38,6 +38,7 @@ end
 #  field :avatar_content_type, :type => String
 #  field :avatar_file_size,    :type => Integer
 #  field :avatar_updated_at,   :type => DateTime
+#  field :avatar_fingerprint,  :type => String
 #
 module Mongoid
   module Paperclip
@@ -63,7 +64,7 @@ module Mongoid
           include ::Paperclip
           include ::Paperclip::Glue
         end
-        
+
         ##
         # Invoke Paperclip's #has_attached_file method and passes in the
         # arguments specified by the user that invoked Mongoid::Paperclip#has_mongoid_attached_file
@@ -75,6 +76,7 @@ module Mongoid
         field(:"#{field}_content_type", :type => String)
         field(:"#{field}_file_size",    :type => Integer)
         field(:"#{field}_updated_at",   :type => DateTime)
+        field(:"#{field}_fingerprint",  :type => String)
       end
 
       ##
