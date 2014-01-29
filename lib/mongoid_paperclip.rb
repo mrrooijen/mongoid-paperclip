@@ -62,6 +62,17 @@ module Mongoid
     end
 
     module ClassMethods
+    
+      ##
+      # Little fix for Mongoid 4
+      def after_commit(*args, &block)
+        args.each do |arg|
+          case arg[:on]
+          when :destroy
+            after_destroy &block
+          end
+        end
+      end
 
       ##
       # Adds Mongoid::Paperclip's "#has_mongoid_attached_file" class method to the model
