@@ -14,6 +14,18 @@ Paperclip.interpolates :id_partition do |attachment, style|
 end
 
 ##
+# mongoid criteria uses a different syntax.
+module Paperclip
+  module Helpers
+    def each_instance_with_attachment(klass, name)
+      class_for(klass).unscoped.where("#{name}_file_name".to_sym.ne => nil).each do |instance|
+        yield(instance)
+      end
+    end
+  end
+end
+
+##
 # The Mongoid::Paperclip extension
 # Makes Paperclip play nice with the Mongoid ODM
 #
