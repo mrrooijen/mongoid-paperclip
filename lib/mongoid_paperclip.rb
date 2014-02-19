@@ -68,7 +68,7 @@ module Mongoid
       def after_commit(*args, &block)
         options = args.pop if args.last.is_a? Hash
         if options
-          case args[:on]
+          case options[:on]
           when :create
             after_create(*args, &block)
           when :update
