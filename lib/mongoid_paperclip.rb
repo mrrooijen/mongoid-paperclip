@@ -14,6 +14,18 @@ Paperclip.interpolates :id_partition do |attachment, style|
 end
 
 ##
+# mongoid criteria uses a different syntax.
+module Paperclip
+  module Helpers
+    def each_instance_with_attachment(klass, name)
+      class_for(klass).unscoped.where("#{name}_file_name".to_sym.ne => nil).each do |instance|
+        yield(instance)
+      end
+    end
+  end
+end
+
+##
 # The Mongoid::Paperclip extension
 # Makes Paperclip play nice with the Mongoid ODM
 #
@@ -38,6 +50,7 @@ end
 #  field :avatar_content_type, :type => String
 #  field :avatar_file_size,    :type => Integer
 #  field :avatar_updated_at,   :type => DateTime
+#  field :avatar_fingerprint,  :type => String
 #
 module Mongoid
   module Paperclip
@@ -49,6 +62,26 @@ module Mongoid
     end
 
     module ClassMethods
+    
+      ##
+      # Adds after_commit
+      def after_commit(*args, &block)
+        options = args.pop if args.last.is_a? Hash
+        if options
+          case args[:on]
+          when :create
+            after_create(*args, &block)
+          when :update
+            after_update(*args, &block)
+          when :destroy
+            after_destroy(*args, &block)
+          else
+            after_save(*args, &block)
+          end
+        else
+          after_save(*args, &block)
+        end
+      end
 
       ##
       # Adds Mongoid::Paperclip's "#has_mongoid_attached_file" class method to the model
@@ -63,7 +96,7 @@ module Mongoid
           include ::Paperclip
           include ::Paperclip::Glue
         end
-        
+
         ##
         # Invoke Paperclip's #has_attached_file method and passes in the
         # arguments specified by the user that invoked Mongoid::Paperclip#has_mongoid_attached_file
@@ -75,6 +108,7 @@ module Mongoid
         field(:"#{field}_content_type", :type => String)
         field(:"#{field}_file_size",    :type => Integer)
         field(:"#{field}_updated_at",   :type => DateTime)
+        field(:"#{field}_fingerprint",  :type => String)
       end
 
       ##
