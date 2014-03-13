@@ -8,8 +8,9 @@ Gem::Specification.new do |gem|
   gem.authors     = 'Michael van Rooijen'
   gem.email       = 'michael@vanrooijen.io'
   gem.homepage    = 'https://github.com/meskyanichi/mongoid-paperclip'
-  gem.summary     = 'Mongoid::Paperclip enables you to use Paperclip with the Mongoid ODM for MongoDB.'
-  gem.description = 'Mongoid::Paperclip enables you to use Paperclip with the Mongoid ODM for MongoDB.'
+  gem.summary     = 'Paperclip compatibility for Mongoid ODM for MongoDB.'
+  gem.description = 'Enables you to use Paperclip with the Mongoid ODM for MongoDB.'
+  gem.license     = 'MIT'
 
   gem.files         = %x[git ls-files].split("\n")
   gem.test_files    = %x[git ls-files -- {spec}/*].split("\n")
