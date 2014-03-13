@@ -3,7 +3,7 @@
 Gem::Specification.new do |gem|
 
   gem.name        = 'mongoid-paperclip'
-  gem.version     = '0.0.8'
+  gem.version     = '0.0.9'
   gem.platform    = Gem::Platform::RUBY
   gem.authors     = 'Michael van Rooijen'
   gem.email       = 'michael@vanrooijen.io'
