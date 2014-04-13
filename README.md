@@ -1,4 +1,5 @@
 # Mongoid::Paperclip
+forked from [meskyanichi/mongoid-paperclip](https://github.com/meskyanichi/mongoid-paperclip) to add localization support
 
 Integrate [Paperclip](https://github.com/thoughtbot/paperclip) into [Mongoid](http://mongoid.org/).
 
@@ -82,6 +83,59 @@ class User
 end
 
 @user.update_attributes({ ... :pictures => [...] })
+```
+
+## Localization support
+This fork add the possibility to link the file to a specific locale.
+
+```rb
+    class User
+      include Mongoid::Document
+      include Mongoid::Paperclip
+
+      has_mongoid_attached_file :some_file, localize: true
+
+    end
+
+    u = User.new
+    f = File.open('path_to_file')
+
+    I18n.locale
+    => :en
+
+    # simple affectation links the file instance to the current locale
+    u.some_file = f
+    => #<File:path_to_file>
+
+    # helper method summarizes files /languages links
+    u.localized_files
+    => {"some_file"=>[:en]}
+
+    # change locale to set it to another language
+    I18n.locale = :fr
+    => :fr
+    u.some_file = f
+    => #<File:path_to_file>
+    u.localized_files
+    => {"some_file"=>[:en, :fr]}
+
+    # or use direct setter
+    u.some_file_es = f
+    => #<File:path_to_file>
+    u.localized_files
+    => {"some_file"=>[:en, :fr, :es]}
+
+    # set one or multiple file using a hash, you're not limited to locales symbol
+    u.some_file_translations= {de: f, i_do_not_need: f}
+    => {:de=>#<File:path_to_file>, :i_do_not_need=>#<File:path_to_file>}
+
+    # get specific file without changing locale
+    u.some_file(:en)
+    => #<Paperclip::Attachment:0x007fed5fbf75f8 @name=:some_file_en ... >
+
+    # or use direct getter
+    u.some_file_i_do_not_need
+    => #<Paperclip::Attachment:0x007fed5bcea2c0 @name=:some_file_my_super ...>
 ```
 
 ## There you go

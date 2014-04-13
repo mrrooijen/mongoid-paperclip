@@ -54,6 +54,70 @@ end
 #
 module Mongoid
   module Paperclip
+    extend ActiveSupport::Concern
+
+    included do
+      class << self
+        attr_accessor :localized_file_fields
+      end
+
+      @localized_file_fields = []
+      field :localized_files,     type: Hash,   default: {}
+
+      after_find do |that|
+        that.localized_files.each do |field, locales|
+          locales.each do |locale|
+            define_mongoid_method(field, locale)
+          end
+        end
+      end
+
+      def method_missing(meth, *args, &block)
+        setter = meth.to_s.last == '=' ? true : false
+        arr = "#{meth}".gsub('=', '').split('_').map(&:to_sym)
+        locale = arr.pop
+        restored_method = (arr*('_')).to_sym
+        if self.class.localized_file_fields.include?(restored_method)
+          define_mongoid_method(restored_method, locale)
+          self.send(meth, *args)
+        else
+          super
+        end
+      end
+
+
+      def define_mongoid_method(field, locale, options={})
+        self.class_eval do
+          has_mongoid_attached_file("#{field}_#{locale}".to_sym)
+          alias_method "#{field}_#{locale}_private=".to_sym, "#{field}_#{locale}=".to_sym
+          alias_method "#{field}_#{locale}_private".to_sym, "#{field}_#{locale}".to_sym
+
+          define_method("#{field}_#{locale}=") do |file|
+            self.send("#{field}_#{locale}_private=".to_sym, file)
+            presence = self.send("#{field}_#{locale}_private").present?
+            update_localized_files_hash(field, locale, presence)
+            file
+          end
+
+          define_method("#{field}_#{locale}") do
+            self.send("#{field}_#{locale}_private".to_sym)
+          end
+        end
+      end
+
+      def update_localized_files_hash(field, locale, presence)
+        locale = locale.to_sym
+        self.localized_files["#{field}"] = [] if self.localized_files["#{field}"].blank?
+        # adding a file
+        if presence
+          self.localized_files["#{field}"].push(locale) if !self.localized_files["#{field}"].include?(locale)
+        # deleting a file
+        elsif !presence
+          self.localized_files["#{field}"].delete(locale) if self.localized_files["#{field}"].include?(locale)
+        end
+      end
+
+    end
 
     ##
     # Extends the model with the defined Class methods
@@ -62,7 +126,7 @@ module Mongoid
     end
 
     module ClassMethods
-    
+
       ##
       # Adds after_commit
       def after_commit(*args, &block)
@@ -89,26 +153,69 @@ module Mongoid
       # it'll also add the required fields for Paperclip since MongoDB is schemaless and doesn't
       # have migrations.
       def has_mongoid_attached_file(field, options = {})
-
-        ##
-        # Include Paperclip and Paperclip::Glue for compatibility
+                  ##
+          # Include Paperclip and Paperclip::Glue for compatibility
         unless self.ancestors.include?(::Paperclip)
           include ::Paperclip
           include ::Paperclip::Glue
         end
+        if options.try(:[], :localize) == true
+          localized_file_fields.push(field) if !localized_file_fields.include?(field)
 
-        ##
-        # Invoke Paperclip's #has_attached_file method and passes in the
-        # arguments specified by the user that invoked Mongoid::Paperclip#has_mongoid_attached_file
-        has_attached_file(field, options)
+          define_method(field) do |locale=I18n.locale|
+            define_mongoid_method(field, locale, options)
+            self.send("#{field}_#{locale}".to_sym)
+          end
 
-        ##
-        # Define the necessary collection fields in Mongoid for Paperclip
-        field(:"#{field}_file_name",    :type => String)
-        field(:"#{field}_content_type", :type => String)
-        field(:"#{field}_file_size",    :type => Integer)
-        field(:"#{field}_updated_at",   :type => DateTime)
-        field(:"#{field}_fingerprint",  :type => String)
+          define_method("#{field}=") do |file|
+            locale = I18n.locale
+            if file.is_a?(File) || file.nil?
+              define_mongoid_method(field, locale, options)
+              self.send("#{field}_#{locale}=".to_sym, file)
+              presence = self.send("#{field}_#{locale}_private").present?
+              update_localized_files_hash(field, locale, presence)
+              file
+            else
+              raise new TypeError("wrong argument type #{file.class} (expected File)")
+            end
+          end
+
+          define_method("#{field}_translations=") do |hashed_files|
+            hashed_files.each do |locale, file|
+              if (locale.is_a?(Symbol) || locale.is_a?(String)) && (file.is_a?(File) || file.nil?)
+                define_mongoid_method(field, locale, options)
+                self.send("#{field}_#{locale}=".to_sym, file)
+                presence = self.send("#{field}_#{locale}_private").present?
+                update_localized_files_hash(field, locale, presence)
+                file
+              elsif file.is_a?(File) || file.nil?
+                raise new TypeError("wrong argument type #{locale.klass} (expected Symbol or String)")
+              elsif locale.is_a?(Symbol) || locale.is_a?(String)
+                raise new TypeError("wrong argument type #{file.klass} (expected File)")
+              end
+              self.localized_files
+            end
+          end
+
+          define_method("#{field}_translations") do
+            self.localized_files["#{field}"]
+          end
+        else
+
+          ##
+          # Invoke Paperclip's #has_attached_file method and passes in the
+          # arguments specified by the user that invoked Mongoid::Paperclip#has_mongoid_attached_file
+          options.delete(:localize)
+          has_attached_file(field, options)
+
+          ##
+          # Define the necessary collection fields in Mongoid for Paperclip
+          field(:"#{field}_file_name",    :type => String)
+          field(:"#{field}_content_type", :type => String)
+          field(:"#{field}_file_size",    :type => Integer)
+          field(:"#{field}_updated_at",   :type => DateTime)
+          field(:"#{field}_fingerprint",  :type => String)
+        end
       end
 
       ##
