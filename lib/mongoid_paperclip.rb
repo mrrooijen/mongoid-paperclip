@@ -8,12 +8,6 @@ rescue LoadError
 end
 
 ##
-# the id of mongoid is not integer, correct the id_partitioin.
-Paperclip.interpolates :id_partition do |attachment, style|
-  attachment.instance.id.to_s.scan(/.{4}/).join("/")
-end
-
-##
 # mongoid criteria uses a different syntax.
 module Paperclip
   module Helpers
@@ -62,7 +56,7 @@ module Mongoid
     end
 
     module ClassMethods
-    
+
       ##
       # Adds after_commit
       def after_commit(*args, &block)
