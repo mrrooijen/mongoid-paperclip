@@ -10,7 +10,14 @@ end
 ##
 # the id of mongoid is not integer, correct the id_partitioin.
 Paperclip.interpolates :id_partition do |attachment, style|
-  attachment.instance.id.to_s.scan(/.{4}/).join("/")
+  case id = attachment.instance.id
+  when Integer
+    ("%09d".freeze % id).scan(/\d{3}/).join("/".freeze)
+  when String
+    id.scan(/.{4}/).join("/".freeze)
+  else
+    nil
+  end
 end
 
 ##
