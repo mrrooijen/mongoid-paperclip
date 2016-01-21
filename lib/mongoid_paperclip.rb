@@ -62,7 +62,7 @@ module Mongoid
     end
 
     module ClassMethods
-    
+
       ##
       # Adds after_commit
       def after_commit(*args, &block)
@@ -89,6 +89,7 @@ module Mongoid
       # it'll also add the required fields for Paperclip since MongoDB is schemaless and doesn't
       # have migrations.
       def has_mongoid_attached_file(field, options = {})
+        disable_fingerprint = options.delete(:disable_fingerprint)
 
         ##
         # Include Paperclip and Paperclip::Glue for compatibility
@@ -108,7 +109,7 @@ module Mongoid
         field(:"#{field}_content_type", :type => String)
         field(:"#{field}_file_size",    :type => Integer)
         field(:"#{field}_updated_at",   :type => DateTime)
-        field(:"#{field}_fingerprint",  :type => String)
+        field(:"#{field}_fingerprint",  :type => String) unless disable_fingerprint
       end
 
       ##

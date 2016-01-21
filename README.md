@@ -84,6 +84,19 @@ end
 @user.update_attributes({ ... :pictures => [...] })
 ```
 
+## Optional fingerprinting
+
+Paperclip will skip calculating the fingerprint of a file when the `{file}_fingerprint` field is missing from the model. This can be desirable if attaching large files to a model. To disable adding the fingerprint field pass the `disable_fingerprint` option as in this example:
+
+```rb
+class User
+  include Mongoid::Document
+  include Mongoid::Paperclip
+
+  has_mongoid_attached_file :usage_report, disable_fingerprint: true
+end
+```
+
 ## There you go
 
 Quite a lot of people have been looking for a solution to use Paperclip with Mongoid so I hope this helps!
