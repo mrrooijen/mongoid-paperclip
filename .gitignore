@@ -2,3 +2,4 @@
 mongoid-paperclip-*.gem
 .*swp
 .*swo
+.ruby-version

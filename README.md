@@ -84,6 +84,16 @@ end
 @user.update_attributes({ ... :pictures => [...] })
 ```
 
+## Testing
+
+If you want to help develop this plugin, clone the repo and bundle to get all dependencies.
+
+Then to run the tests:
+
+```
+rspec
+```
+
 ## There you go
 
 Quite a lot of people have been looking for a solution to use Paperclip with Mongoid so I hope this helps!

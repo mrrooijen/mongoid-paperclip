@@ -62,7 +62,7 @@ module Mongoid
     end
 
     module ClassMethods
-    
+
       ##
       # Adds after_commit
       def after_commit(*args, &block)
