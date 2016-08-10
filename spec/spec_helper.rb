@@ -18,3 +18,14 @@ class User
   has_mongoid_attached_file :avatar
   validates_attachment_file_name :avatar, matches: [/image/]
 end
+
+class MultipleAttachments
+  include Mongoid::Document
+  include Mongoid::Paperclip
+
+  has_mongoid_attached_file :avatar
+  validates_attachment_file_name :avatar, matches: [/image/]
+
+  has_mongoid_attached_file :icon
+  validates_attachment_file_name :avatar, matches: [/image/]
+end
