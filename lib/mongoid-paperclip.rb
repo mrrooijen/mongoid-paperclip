@@ -1,0 +1,1 @@
+require 'mongoid_paperclip'
