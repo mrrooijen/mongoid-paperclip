@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 Gem::Specification.new do |gem|
-
   gem.name        = 'mongoid-paperclip'
   gem.version     = '0.0.11'
   gem.platform    = Gem::Platform::RUBY
@@ -17,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.require_path  = 'lib'
 
   gem.add_dependency 'mongoid'
-  gem.add_dependency 'paperclip', ['>= 2.3.6', '!=4.3.0']
+  gem.add_dependency 'paperclip', ['>= 2.3.6', '!=4.3.0', '!=4.3.3']
 
   gem.add_development_dependency 'bundler'
   gem.add_development_dependency 'rake'
