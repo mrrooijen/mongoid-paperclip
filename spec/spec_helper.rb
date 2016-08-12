@@ -11,12 +11,19 @@ RSpec.configure do |config|
   end
 end
 
+# Mock Rails itself so Paperclip can write the attachments to a directory.
+class Rails
+  def self.root
+    File.expand_path(File.dirname(__FILE__))
+  end
+end
+
 class User
   include Mongoid::Document
   include Mongoid::Paperclip
 
   has_mongoid_attached_file :avatar
-  validates_attachment_file_name :avatar, matches: [/image/]
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 end
 
 class MultipleAttachments
@@ -24,10 +31,10 @@ class MultipleAttachments
   include Mongoid::Paperclip
 
   has_mongoid_attached_file :avatar
-  validates_attachment_file_name :avatar, matches: [/image/]
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
   has_mongoid_attached_file :icon
-  validates_attachment_file_name :avatar, matches: [/image/]
+  validates_attachment_content_type :icon, content_type: /\Aimage\/.*\Z/
 end
 
 class NoFingerprint
@@ -35,5 +42,5 @@ class NoFingerprint
   include Mongoid::Paperclip
 
   has_mongoid_attached_file :avatar, disable_fingerprint: true
-  validates_attachment_file_name :avatar, matches: [/image/]
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 end
