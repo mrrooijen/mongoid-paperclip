@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |gem|
   gem.name        = 'mongoid-paperclip'
-  gem.version     = '0.0.11'
+  gem.version     = '1.0.0.pre'
   gem.platform    = Gem::Platform::RUBY
-  gem.authors     = 'Michael van Rooijen'
-  gem.email       = 'michael@vanrooijen.io'
-  gem.homepage    = 'https://github.com/meskyanichi/mongoid-paperclip'
+  gem.authors     = ['Michael van Rooijen', 'Joost Baaij']
+  gem.email       = ['michael@vanrooijen.io', 'joost@spacebabies.nl']
+  gem.homepage    = 'https://github.com/mrrooijen/mongoid-paperclip'
   gem.summary     = 'Paperclip compatibility for Mongoid ODM for MongoDB.'
   gem.description = 'Enables you to use Paperclip with the Mongoid ODM for MongoDB.'
   gem.license     = 'MIT'

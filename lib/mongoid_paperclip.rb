@@ -1,11 +1,4 @@
-# encoding: utf-8
-
-begin
-  require "paperclip"
-rescue LoadError
-  puts "Mongoid::Paperclip requires that you install the Paperclip gem."
-  exit
-end
+require 'paperclip'
 
 ##
 # the id of mongoid is not integer, correct the id_partitioin.
