@@ -38,4 +38,16 @@ RSpec.describe Mongoid::Paperclip, type: :unit do
       expect(user.icon_file_name).to eq("avatar.png")
     end
   end
+
+  describe "disable fingerprint" do
+    let(:user) { NoFingerprint.create }
+
+    before do
+      user.update avatar: File.new('spec/support/avatar.png', 'rb')
+    end
+
+    it "does not store a fingerprint" do
+      expect(user.attributes).to_not include('fingerprint')
+    end
+  end
 end

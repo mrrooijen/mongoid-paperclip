@@ -29,3 +29,11 @@ class MultipleAttachments
   has_mongoid_attached_file :icon
   validates_attachment_file_name :avatar, matches: [/image/]
 end
+
+class NoFingerprint
+  include Mongoid::Document
+  include Mongoid::Paperclip
+
+  has_mongoid_attached_file :avatar, disable_fingerprint: true
+  validates_attachment_file_name :avatar, matches: [/image/]
+end
