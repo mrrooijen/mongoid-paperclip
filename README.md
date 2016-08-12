@@ -95,6 +95,7 @@ class User
 
   has_mongoid_attached_file :usage_report, disable_fingerprint: true
 end
+```
 
 ## Testing
 
