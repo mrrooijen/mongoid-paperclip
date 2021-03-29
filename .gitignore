@@ -4,3 +4,4 @@ mongoid-paperclip-*.gem
 .*swo
 .ruby-version
 /spec/public
+Gemfile.lock
