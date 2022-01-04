@@ -1,6 +1,7 @@
 # Mongoid::Paperclip
 
-Integrate [Paperclip](https://github.com/thoughtbot/paperclip) into [Mongoid](http://mongoid.org/).
+Integrate [kt-paperclip](https://github.com/kreeti/kt-paperclip) into [Mongoid](http://mongoid.org/).
+(Kt-paperclip is a maintained fork of the original [Paperclip](https://github.com/thoughtbot/paperclip) that is now deprecated)
 
 This is actually easier and faster to set up than when using Paperclip and the ActiveRecord ORM.
 
@@ -108,7 +109,7 @@ rspec
 
 Quite a lot of people have been looking for a solution to use Paperclip with Mongoid so I hope this helps!
 
-If you need more information on either [Mongoid](http://mongoid.org/) or [Paperclip](https://github.com/thoughtbot/paperclip) I suggest checking our their official documentation and website.
+If you need more information on either [Mongoid](http://mongoid.org/) or [kt-paperclip](https://github.com/kreeti/kt-paperclip) I suggest checking our their official documentation and website.
 
 ## License
 
