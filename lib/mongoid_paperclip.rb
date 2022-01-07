@@ -66,7 +66,7 @@ module Mongoid
       ##
       # Adds after_commit
       def after_commit(*args, &block)
-        options = args.last if args.last.is_a? Hash
+        options = args.pop if args.last.is_a? Hash
         if options
           case options[:on]
           when :create
