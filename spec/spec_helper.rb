@@ -22,7 +22,7 @@ class User
   include Mongoid::Document
   include Mongoid::Paperclip
 
-  has_mongoid_attached_file :avatar
+  has_mongoid_attached_file :avatar, url: "/system/:class/:id_partition/:basename-:style.:extension"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 end
 

@@ -6,8 +6,8 @@ Paperclip.interpolates :id_partition do |attachment, style|
   case id = attachment.instance.id
   when Integer
     ("%09d".freeze % id).scan(/\d{3}/).join("/".freeze)
-  when String
-    id.scan(/.{4}/).join("/".freeze)
+  when String, BSON::ObjectId
+    id.to_s.scan(/.{4}/).join("/".freeze)
   else
     nil
   end

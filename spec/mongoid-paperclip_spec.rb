@@ -27,6 +27,12 @@ RSpec.describe Mongoid::Paperclip, type: :unit do
     it "stores fingerprint" do
       expect(user.avatar_fingerprint).to eq("2584a801e588b3fcf4aa074efff77e30")
     end
+
+    it "interpolates path and url properly" do
+      id_partition = user.id.to_s.scan(/.{4}/).join("/")
+      expect(user.avatar.url).to eq("/system/users/#{id_partition}/avatar-original.png?#{Time.now.to_i}")
+      expect(user.avatar.path).to eq("#{__dir__}/public/system/users/#{id_partition}/avatar-original.png")
+    end
   end
 
   describe "multiple attachments" do
